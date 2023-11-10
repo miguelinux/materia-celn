@@ -3,31 +3,19 @@
 import numpy as np
 import cv2 as cv
 import socket
+import json
 
 HOST = "127.0.0.1"  # The server's hostname or IP address
 PORT = 10000        # The port used by the server
 
-camara = cv.VideoCapture(0)
-
-if not camara.isOpened():
-    print("No puedo abrir la camara")
-    exit(1)
-
 while True:
-    # Leemos la imagen de la camara
-    ret, imagen = camara.read()
+    # Leemos la imagen
+    imagen = cv.imread("zidane.jpg")
 
-    if not ret:
-        print("No podemos capturar la imagen de la camara")
-        break
-
-    b_imagen = bytearray()
+    b_json = ""
 
     encode_param = [int(cv.IMWRITE_JPEG_QUALITY), 90]
     result, img_enc = cv.imencode('.jpg', imagen, encode_param)
-
-    if not result:
-        continue
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
@@ -40,20 +28,15 @@ while True:
             data = s.recv(4096)
             if not data:
                 break
-            b_imagen += data
+            b_json += data
 
-    print("ok:", len(b_imagen))
+    print("ok:", len(b_json))
+    el_json = json.loads( b_json.encode() )
+    print(el_json)
 
-    h = int.from_bytes(b_imagen[:2],  byteorder="little")
-    w = int.from_bytes(b_imagen[2:4], byteorder="little")
-
-    gris = np.ndarray(shape=(h,w), dtype='uint8',
-                      buffer=b_imagen, offset=4)
-    
-    cv.imshow("Camara", gris)
+    cv.imshow("Local", imagen)
 
     if cv.waitKey(1) == 27:
         break
 
-camara.release()
 cv.destroyAllWindows()
