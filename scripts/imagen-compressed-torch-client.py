@@ -32,7 +32,10 @@ while True:
 
     print("ok:", len(b_json))
     el_json = json.loads( b_json.decode() )
-    print(el_json)
+    for objetos in el_json:
+        for x, y in objetos.items():
+          print(x, y)
+        print("----------")
 
     cv.imshow("Local", imagen)
 
