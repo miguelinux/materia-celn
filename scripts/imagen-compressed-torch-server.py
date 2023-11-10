@@ -29,7 +29,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             while len(b_imagen) < img_size:
                 data = conn.recv(4096)
                 b_imagen += data
-                print(len(b_imagen))
                 if not data:
                     print("break")
                     break
@@ -46,4 +45,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             # Inference
             results = model(color)
             ret = results.pandas().xyxy[0].to_json(orient="records")
-            conn.sendall(ret.encoded())
+            conn.sendall(ret.encode())

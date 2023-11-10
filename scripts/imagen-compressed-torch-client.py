@@ -12,7 +12,7 @@ while True:
     # Leemos la imagen
     imagen = cv.imread("zidane.jpg")
 
-    b_json = ""
+    b_json = bytearray()
 
     encode_param = [int(cv.IMWRITE_JPEG_QUALITY), 90]
     result, img_enc = cv.imencode('.jpg', imagen, encode_param)
@@ -31,7 +31,7 @@ while True:
             b_json += data
 
     print("ok:", len(b_json))
-    el_json = json.loads( b_json.encode() )
+    el_json = json.loads( b_json.decode() )
     print(el_json)
 
     cv.imshow("Local", imagen)
