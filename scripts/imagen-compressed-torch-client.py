@@ -33,9 +33,15 @@ while True:
     print("ok:", len(b_json))
     el_json = json.loads( b_json.decode() )
     for objetos in el_json:
-        for x, y in objetos.items():
-          print(x, y)
-        print("----------")
+        # Esquina Superior Izquierda
+        esi = (int(objetos["xmin"]), int(objetos["ymin"]))
+        # Esquina Inferior Derecha
+        eid = (int(objetos["xmax"]), int(objetos["ymax"]))
+        #confidence class name
+        #for x, y in objetos.items():
+        #  print(x, y)
+        #print("----------")
+        cv.rectangle(imagen,esi,eid, (255, 0, 0), 2)
 
     cv.imshow("Local", imagen)
 
