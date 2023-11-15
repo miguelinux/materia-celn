@@ -14,6 +14,15 @@ if not camara.isOpened():
     print("No puedo abrir la camara")
     exit(1)
 
+# font
+font = cv.FONT_HERSHEY_SIMPLEX
+# fontScale
+fontScale = 1
+# Blue color in BGR
+color = (0, 0, 255)
+# Line thickness of 2 px
+thickness = 2
+
 while True:
     # Leemos la imagen de la camara
     ret, imagen = camara.read()
@@ -55,7 +64,9 @@ while True:
         #  print(x, y)
         print(objetos["name"])
         print("----------")
-        cv.rectangle(imagen,esi,eid, (255, 0, 0), 2)
+        cv.rectangle(imagen,esi, eid, (255, 0, 0), 2)
+        cv.putText(imagen, objetos["name"], esi, font,
+                   fontScale, color, thickness, cv.LINE_AA)
 
     cv.imshow("Local", imagen)
 
